@@ -1,0 +1,81 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Data files (large datasets - users will generate their own)
+data/train/*.npy
+data/test/*.npy
+*.npy
+!data/train/.gitkeep
+!data/test/.gitkeep
+
+# Trained models (users will train their own)
+models/*.pkl
+models/*.keras
+models/*.h5
+!models/*.json
+!models/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+~*
+
+# Documentation artifacts
+*.md.backup
+EXECUTE_NOW.md
+SETUP_COMPLETE.md
+QUICK_START.md
+READY_TO_RUN.md
