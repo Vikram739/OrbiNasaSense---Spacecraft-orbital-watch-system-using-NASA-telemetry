@@ -9,11 +9,15 @@ import json
 import numpy as np
 from typing import Tuple, Dict, Optional
 import pickle
-
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
-from data_utils import create_sliding_windows, normalize_data
+# Add parent directory to path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from src.data_utils import create_sliding_windows, normalize_data
 
 # Try to import TensorFlow, fall back to sklearn
 try:
@@ -21,7 +25,7 @@ try:
     USE_TENSORFLOW = True
 except ImportError:
     USE_TENSORFLOW = False
-    from model_sklearn import SimpleLSTMAlternative
+    from src.model_sklearn import SimpleLSTMAlternative
 
 
 def load_model_and_config(channel: str, 
