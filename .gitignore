@@ -45,13 +45,17 @@ data/train/*.npy
 data/test/*.npy
 !data/train/P-1_train.npy
 !data/test/P-1_test.npy
+!data/train/M-1_train.npy
+!data/test/M-1_test.npy
+!data/train/E-1_train.npy
+!data/test/E-1_test.npy
 !data/train/.gitkeep
 !data/test/.gitkeep
 
-# Trained models (keep config files)
-models/*.pkl
-models/*.keras
-models/*.h5
+# Keep trained models for deployment
+# models/*.pkl
+# models/*.keras
+# models/*.h5
 !models/*.json
 !models/.gitkeep
 
