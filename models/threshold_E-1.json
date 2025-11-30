@@ -1,0 +1,16 @@
+{
+  "channel": "E-1",
+  "window_size": 50,
+  "lstm_units": 64,
+  "threshold": 1.8087860916051668,
+  "mean_error": 0.17828184050201581,
+  "std_error": 0.5435014170343836,
+  "threshold_k": 3.0,
+  "data_mean": -0.001888888888888889,
+  "data_std": 0.2481527058730143,
+  "train_data_shape": [
+    2880,
+    25
+  ],
+  "model_path": "models\\model_E-1.pkl"
+}
