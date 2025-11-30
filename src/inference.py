@@ -71,26 +71,26 @@ def load_model_and_config(channel: str,
 def run_inference(data: np.ndarray,
                  model,
                  config: Dict,
-                 custom_threshold_k: Optional[float] = None) -> Dict:
+                 custom_threshold_k: Optional[float] = None,
+                 downsample_factor: int = 1) -> Dict:
     """
     Run inference on telemetry data and detect anomalies.
     
     Args:
         data: 1D array of telemetry data
-        model: Trained Keras model
+        model: Trained model
         config: Configuration dictionary with threshold and normalization params
         custom_threshold_k: Optional custom threshold multiplier (overrides config)
+        downsample_factor: Factor to downsample data (1=no downsampling, 2=every 2nd point, etc.)
         
     Returns:
-        Dictionary containing:
-            - 'predictions': Predicted values (denormalized)
-            - 'errors': Prediction errors
-            - 'anomaly_mask': Boolean array indicating anomalies
-            - 'anomaly_indices': Indices where anomalies occur
-            - 'threshold': Threshold used
-            - 'num_anomalies': Count of anomalous points
-            - 'anomaly_percentage': Percentage of anomalous points
+        Dictionary containing anomaly detection results
     """
+    # Downsample if requested for faster processing
+    original_length = len(data)
+    if downsample_factor > 1:
+        data = data[::downsample_factor]
+    
     # Extract config parameters
     window_size = config['window_size']
     data_mean = config['data_mean']
@@ -110,30 +110,25 @@ def run_inference(data: np.ndarray,
     # Create sliding windows
     X, y = create_sliding_windows(normalized_data, window_size)
     
-    # Reshape for LSTM
+    # Reshape for model
     X = X.reshape(-1, window_size, 1)
     
-    # Make predictions
-    print(f"Running inference on {len(X)} windows...")
+    # Make predictions (batch processing)
     predictions_normalized = model.predict(X, verbose=0).flatten()
     
     # Denormalize predictions
     predictions = predictions_normalized * data_std + data_mean
     actual_values = y * data_std + data_mean
     
-    # Compute errors
+    # Compute errors and detect anomalies in one pass
     errors = np.abs(predictions_normalized - y)
-    
-    # Detect anomalies
     anomaly_mask = errors > threshold
-    anomaly_indices = np.where(anomaly_mask)[0]
     
     # Calculate statistics
-    num_anomalies = int(np.sum(anomaly_mask))
+    num_anomalies = int(anomaly_mask.sum())
     anomaly_percentage = (num_anomalies / len(anomaly_mask)) * 100 if len(anomaly_mask) > 0 else 0
     
     # Prepare full-length arrays (accounting for window offset)
-    # The first `window_size` points don't have predictions
     full_length = len(data)
     full_predictions = np.full(full_length, np.nan)
     full_errors = np.full(full_length, np.nan)
@@ -144,12 +139,34 @@ def run_inference(data: np.ndarray,
     full_errors[window_size:window_size+len(errors)] = errors
     full_anomaly_mask[window_size:window_size+len(anomaly_mask)] = anomaly_mask
     
+    # Get anomaly indices from full mask
+    full_anomaly_indices = np.where(full_anomaly_mask)[0]
+    
+    # Upsample results if data was downsampled
+    if downsample_factor > 1:
+        upsampled_predictions = np.full(original_length, np.nan)
+        upsampled_errors = np.full(original_length, np.nan)
+        upsampled_mask = np.zeros(original_length, dtype=bool)
+        
+        # Map downsampled indices to original indices
+        for i in range(full_length):
+            orig_idx = i * downsample_factor
+            if orig_idx < original_length:
+                upsampled_predictions[orig_idx] = full_predictions[i]
+                upsampled_errors[orig_idx] = full_errors[i]
+                upsampled_mask[orig_idx] = full_anomaly_mask[i]
+        
+        full_predictions = upsampled_predictions
+        full_errors = upsampled_errors
+        full_anomaly_mask = upsampled_mask
+        full_anomaly_indices = np.where(full_anomaly_mask)[0]
+    
     result = {
         'predictions': full_predictions,
         'actual_values': actual_values,
         'errors': full_errors,
         'anomaly_mask': full_anomaly_mask,
-        'anomaly_indices': anomaly_indices + window_size,  # Adjust for offset
+        'anomaly_indices': full_anomaly_indices,  # Use full-length indices
         'threshold': threshold,
         'num_anomalies': num_anomalies,
         'anomaly_percentage': anomaly_percentage,

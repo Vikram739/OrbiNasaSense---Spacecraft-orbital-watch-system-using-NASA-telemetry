@@ -1,8 +1,234 @@
-﻿# 🛰️ OrbiNasaSense - Spacecraft Orbital Watch System
+﻿# 🛰️ OrbiNasaSense - Spacecraft Anomaly Detection System
 
-**Intelligent anomaly detection system for NASA spacecraft telemetry using machine learning.** This project automatically monitors spacecraft sensor data and detects unusual patterns that could indicate equipment failures, solar flare damage, or other critical issues - helping engineers identify problems before they become catastrophic.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://orbinaasense.streamlit.app)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Built with Python, NumPy, and Streamlit, OrbiNasaSense provides real-time visualization and analysis of spacecraft telemetry data with an intuitive web-based dashboard.
+**Real-time anomaly detection system for NASA spacecraft telemetry using machine learning.**
+
+Automatically monitors spacecraft sensor data and detects unusual patterns that could indicate equipment failures or critical issues. Features AUTO model selection that intelligently analyzes your data and picks the optimal detection algorithm.
+
+🌐 **[Live Demo](https://orbinaasense.streamlit.app)** | 📊 **[GitHub](https://github.com/Vikram739/OrbiNasaSense---Spacecraft-orbital-watch-system-using-NASA-telemetry)**
+
+---
+
+## ✨ Features
+
+- 🤖 **AUTO Model Selection** - Automatically detects data type and selects best model
+- ⚡ **Fast Processing** - Downsample mode for 2x speed boost
+- 📊 **Interactive Dashboard** - Real-time visualization with Plotly charts
+- 🔮 **Lifespan Prediction** - Estimates remaining operational days
+- 📈 **3-Panel Analysis** - Telemetry, predictions, and error visualization
+- 💾 **Export Reports** - Download anomaly data as CSV
+- 🎯 **Multi-Model Support** - P-1 (Power), M-1 (Mechanical), E-1 (Environmental)
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Use Live Demo (Easiest)
+
+Visit **[orbinaasense.streamlit.app](https://orbinaasense.streamlit.app)** - No installation needed!
+
+### Option 2: Run Locally
+
+```bash
+# 1. Clone repository
+git clone https://github.com/Vikram739/OrbiNasaSense---Spacecraft-orbital-watch-system-using-NASA-telemetry.git
+cd OrbiNasaSense---Spacecraft-orbital-watch-system-using-NASA-telemetry
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Launch app
+streamlit run app.py
+```
+
+Open browser at `http://localhost:8501`
+
+---
+
+## 📖 How to Use
+
+### 1. **Select Model**
+- **AUTO** (Recommended) - Analyzes your data automatically
+- **P-1** - Power/Electrical systems
+- **M-1** - Mechanical systems
+- **E-1** - Environmental sensors
+
+### 2. **Load Data**
+- Choose sample from dataset, or
+- Upload your own `.npy`, `.csv`, or `.txt` file
+
+### 3. **Adjust Settings** (Optional)
+- **Threshold Multiplier** - Detection sensitivity (1.0-5.0)
+- **Processing Speed** - Normal or Fast (2x speed)
+
+### 4. **Run Detection**
+Click "🚀 Run Anomaly Detection" button
+
+### 5. **Analyze Results**
+- View detected anomalies in interactive charts
+- Check lifespan prediction
+- Download detailed report
+
+---
+
+## 🏗️ Project Structure
+
+```
+OrbiNasaSense/
+├── app.py                          # Streamlit UI
+├── train.py                        # Model training
+├── requirements.txt                # Dependencies
+├── .github/workflows/
+│   └── keep-alive.yml             # Auto-ping to prevent sleep
+├── .streamlit/
+│   └── config.toml                # Streamlit config
+├── src/
+│   ├── data_utils.py              # Data utilities
+│   ├── inference.py               # Detection logic
+│   ├── model_sklearn.py           # Pure NumPy model
+│   └── auto_model_selector.py     # AUTO detection
+├── data/
+│   ├── train/                     # Training data
+│   └── test/                      # Test data
+└── models/
+    ├── model_P-1.pkl              # Trained models
+    ├── model_M-1.pkl
+    ├── model_E-1.pkl
+    └── threshold_*.json           # Detection thresholds
+```
+
+---
+
+## 🎓 Training Custom Models
+
+```bash
+# Train on your data
+python train.py --channel MY_SENSOR --window-size 50 --epochs 50
+
+# Parameters:
+#   --channel: Sensor name (e.g., P-1, temperature)
+#   --window-size: Past values to consider (default: 50)
+#   --epochs: Training iterations (default: 50)
+#   --threshold-k: Sensitivity (default: 3.0)
+```
+
+---
+
+## 📊 Data Format
+
+Your data should be:
+- **Time series** numerical values
+- **Saved as** `.npy`, `.csv`, or `.txt`
+- **Single column** per file
+
+**Example: Convert CSV to NPY**
+```python
+import numpy as np
+import pandas as pd
+
+df = pd.read_csv('sensor_data.csv')
+data = df['temperature'].values
+np.save('data/train/my_sensor_train.npy', data[:8000])
+np.save('data/test/my_sensor_test.npy', data[8000:])
+```
+
+---
+
+## 🔧 Technology Stack
+
+- **Frontend:** Streamlit
+- **Visualization:** Plotly
+- **ML Framework:** Pure NumPy (Python 3.14 compatible)
+- **Data Processing:** Pandas, NumPy
+- **Deployment:** Streamlit Cloud + GitHub Actions
+
+---
+
+## 🌐 Deployment
+
+### Streamlit Cloud (Free)
+
+1. **Fork this repository**
+2. **Go to** [share.streamlit.io](https://share.streamlit.io)
+3. **New app** → Select your repo
+4. **Main file:** `app.py`
+5. **Deploy!**
+
+**GitHub Actions** automatically pings your app every 10 minutes to prevent sleep.
+
+### Update App URL
+
+After deployment, edit `.github/workflows/keep-alive.yml`:
+```yaml
+APP_URL="https://your-actual-app-url.streamlit.app"
+```
+
+---
+
+## 🎯 Use Cases
+
+- 🛰️ **Spacecraft Monitoring** - Detect sensor anomalies in satellites
+- 🚀 **Launch Systems** - Monitor pre-launch telemetry
+- 🔬 **Research** - Study spacecraft behavior patterns
+- 📚 **Education** - Learn anomaly detection techniques
+- 🏢 **Industrial IoT** - Monitor equipment sensors
+
+---
+
+## 📈 Performance
+
+- **Processing Speed:** 
+  - Normal: ~100k points/sec
+  - Fast mode: ~200k points/sec (2x)
+- **Model Size:** <1 MB per channel
+- **Memory Usage:** <100 MB
+- **Startup Time:** <5 seconds
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Please:
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+---
+
+## 📄 License
+
+MIT License - Free for educational and commercial use.
+
+---
+
+## 🙏 Acknowledgments
+
+- **NASA SMAP/MSL** - Telemetry data format
+- **Streamlit** - Web framework
+- **Plotly** - Interactive visualizations
+
+---
+
+## 📧 Contact
+
+**Developer:** Vikram  
+**GitHub:** [@Vikram739](https://github.com/Vikram739)  
+**Live Demo:** [orbinaasense.streamlit.app](https://orbinaasense.streamlit.app)
+
+---
+
+## ⭐ Star This Project
+
+If you find this useful, give it a star! ⭐
+
+---
+
+**Built with 💙 for spacecraft safety**
 
 ---
 
