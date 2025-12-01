@@ -110,9 +110,24 @@ def main():
     print(f"Batch size: {args.batch_size}")
     print("=" * 60)
     
-    # Construct file paths
-    train_file = os.path.join(args.data_dir, 'train', f'{args.channel}_train.npy')
-    test_file = os.path.join(args.data_dir, 'test', f'{args.channel}_test.npy')
+    # Construct file paths - try both NASA format and our custom format
+    train_file_custom = os.path.join(args.data_dir, 'train', f'{args.channel}_train.npy')
+    train_file_nasa = os.path.join(args.data_dir, 'train', f'{args.channel}.npy')
+    test_file_custom = os.path.join(args.data_dir, 'test', f'{args.channel}_test.npy')
+    test_file_nasa = os.path.join(args.data_dir, 'test', f'{args.channel}.npy')
+    
+    # Determine which file exists
+    if os.path.exists(train_file_custom):
+        train_file = train_file_custom
+        test_file = test_file_custom
+    elif os.path.exists(train_file_nasa):
+        train_file = train_file_nasa
+        test_file = test_file_nasa
+    else:
+        print(f"Error: Channel file not found")
+        print(f"Tried: {train_file_custom}")
+        print(f"Tried: {train_file_nasa}")
+        sys.exit(1)
     
     # Load training data
     print(f"\nLoading training data from {train_file}...")
