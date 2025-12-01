@@ -116,17 +116,17 @@ def main():
     test_file_custom = os.path.join(args.data_dir, 'test', f'{args.channel}_test.npy')
     test_file_nasa = os.path.join(args.data_dir, 'test', f'{args.channel}.npy')
     
-    # Determine which file exists
-    if os.path.exists(train_file_custom):
-        train_file = train_file_custom
-        test_file = test_file_custom
-    elif os.path.exists(train_file_nasa):
+    # Determine which file exists - PRIORITIZE NASA FILES
+    if os.path.exists(train_file_nasa):
         train_file = train_file_nasa
         test_file = test_file_nasa
+    elif os.path.exists(train_file_custom):
+        train_file = train_file_custom
+        test_file = test_file_custom
     else:
         print(f"Error: Channel file not found")
-        print(f"Tried: {train_file_custom}")
         print(f"Tried: {train_file_nasa}")
+        print(f"Tried: {train_file_custom}")
         sys.exit(1)
     
     # Load training data

@@ -2,14 +2,15 @@
   "channel": "M-1",
   "window_size": 50,
   "lstm_units": 64,
-  "threshold": 1.1555214130036662,
-  "mean_error": 0.18715713738721002,
-  "std_error": 0.32278809187215207,
+  "threshold": 3.0743590735175648,
+  "mean_error": 0.25005298765005496,
+  "std_error": 0.9414353619558367,
   "threshold_k": 3.0,
-  "data_mean": 0.7348722559362902,
-  "data_std": 0.4261355424159195,
+  "data_mean": 0.012873064937949,
+  "data_std": 0.13041386053511644,
   "train_data_shape": [
-    8000
+    2209,
+    55
   ],
   "model_path": "models\\model_M-1.pkl"
 }
