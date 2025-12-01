@@ -43,12 +43,6 @@ env/
 # Large data files (keep only essential sample data)
 data/train/*.npy
 data/test/*.npy
-!data/train/P-1_train.npy
-!data/test/P-1_test.npy
-!data/train/M-1_train.npy
-!data/test/M-1_test.npy
-!data/train/E-1_train.npy
-!data/test/E-1_test.npy
 !data/train/.gitkeep
 !data/test/.gitkeep
 

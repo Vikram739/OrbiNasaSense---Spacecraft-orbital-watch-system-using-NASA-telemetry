@@ -48,12 +48,13 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Download NASA data (see README for Kaggle link)
+
 # Make your changes
 # ...
 
 # Test
-python generate_sample_data.py
-python train.py --channel test --epochs 10
+python train.py --channel P-1 --epochs 10
 streamlit run app.py
 ```
 

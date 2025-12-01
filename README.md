@@ -131,8 +131,8 @@ import pandas as pd
 
 df = pd.read_csv('sensor_data.csv')
 data = df['temperature'].values
-np.save('data/train/my_sensor_train.npy', data[:8000])
-np.save('data/test/my_sensor_test.npy', data[8000:])
+np.save('data/train/CUSTOM-1.npy', data[:8000])
+np.save('data/test/CUSTOM-1.npy', data[8000:])
 ```
 
 ---
@@ -251,17 +251,16 @@ cd OrbiNasaSense---Spacecraft-orbital-watch-system-using-NASA-telemetry
 pip install -r requirements.txt
 ```
 
-3. **Generate sample data:**
-```bash
-python generate_sample_data.py
-```
-This creates synthetic NASA-like telemetry data in `data/train/` and `data/test/` folders.
+3. **Download NASA SMAP/MSL dataset:**
+   - Visit [Kaggle SMAP/MSL Dataset](https://www.kaggle.com/datasets/patrickfleith/nasa-anomaly-detection-dataset-smapmsl)
+   - Download and extract to `data/train/` and `data/test/` folders
+   - You should have 82 NASA telemetry channels (A-1 through T-13)
 
 4. **Train a model:**
 ```bash
-python train.py --channel P-1 --window-size 50 --epochs 50
+python train.py --channel P-1 --window-size 50 --epochs 100
 ```
-This trains an anomaly detection model on the P-1 channel data (takes 2-5 minutes).
+This trains an anomaly detection model on NASA P-1 channel data.
 
 5. **Launch the dashboard:**
 ```bash
@@ -277,7 +276,7 @@ Your browser will open automatically to `http://localhost:8501`.
 In the left sidebar, choose a trained model from the dropdown (e.g., "P-1").
 
 ### Step 2: Load Data
-- **Option A:** Click "Load Sample Data" and select a test file (e.g., `P-1_test.npy`)
+- **Option A:** Click "Load Sample Data" and select a NASA test file (e.g., `P-1.npy`)
 - **Option B:** Upload your own `.npy` file with telemetry data
 
 ### Step 3: Run Detection
@@ -351,7 +350,7 @@ files   Windows      (or LSTM*)           Flag anomaly       Interactive
 OrbiNasaSense/
 ├── app.py                      # Streamlit web dashboard
 ├── train.py                    # Model training script
-├── generate_sample_data.py     # Synthetic data generator
+
 ├── requirements.txt            # Python dependencies
 ├── LAUNCH_UI.bat              # Quick launcher (Windows)
 ├── RUN_PROJECT.bat            # Full setup script (Windows)
@@ -434,8 +433,8 @@ df = pd.read_csv('satellite_data.csv')
 data = df['temperature'].values  # or 'pressure', 'voltage', etc.
 
 # Save as .npy
-np.save('data/train/my_sensor_train.npy', data[:8000])
-np.save('data/test/my_sensor_test.npy', data[8000:])
+np.save('data/train/CUSTOM-1.npy', data[:8000])
+np.save('data/test/CUSTOM-1.npy', data[8000:])
 ```
 
 **From Text File:**
@@ -444,7 +443,7 @@ import numpy as np
 
 # One value per line
 data = np.loadtxt('sensor_readings.txt')
-np.save('data/train/my_data_train.npy', data)
+np.save('data/train/CUSTOM-2.npy', data)
 ```
 
 **From Excel:**
@@ -453,8 +452,8 @@ import pandas as pd
 import numpy as np
 
 df = pd.read_excel('telemetry.xlsx')
-data = df['sensor_1'].values
-np.save('data/train/sensor1_train.npy', data)
+data = df['sensor1'].values
+np.save('data/train/CUSTOM-3.npy', data)
 ```
 
 ### Real NASA Data
@@ -483,10 +482,8 @@ python train.py --channel P-1 --epochs 50
 ```
 
 ### "No data files found"
-Generate sample data:
-```bash
-python generate_sample_data.py
-```
+Download NASA SMAP/MSL dataset from Kaggle and extract to `data/train/` and `data/test/` folders.
+[Dataset Link](https://www.kaggle.com/datasets/patrickfleith/nasa-anomaly-detection-dataset-smapmsl)
 
 ### Streamlit won't start
 Use the full Python path:
