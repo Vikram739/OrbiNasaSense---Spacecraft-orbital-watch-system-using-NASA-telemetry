@@ -110,24 +110,19 @@ def main():
     print(f"Batch size: {args.batch_size}")
     print("=" * 60)
     
-    # Construct file paths - try both NASA format and our custom format
-    train_file_custom = os.path.join(args.data_dir, 'train', f'{args.channel}_train.npy')
-    train_file_nasa = os.path.join(args.data_dir, 'train', f'{args.channel}.npy')
-    test_file_custom = os.path.join(args.data_dir, 'test', f'{args.channel}_test.npy')
-    test_file_nasa = os.path.join(args.data_dir, 'test', f'{args.channel}.npy')
+    # Construct file paths - NASA format only
+    train_file = os.path.join(args.data_dir, 'train', f'{args.channel}.npy')
+    test_file = os.path.join(args.data_dir, 'test', f'{args.channel}.npy')
     
-    # Determine which file exists
-    if os.path.exists(train_file_custom):
-        train_file = train_file_custom
-        test_file = test_file_custom
-    elif os.path.exists(train_file_nasa):
-        train_file = train_file_nasa
-        test_file = test_file_nasa
-    else:
-        print(f"Error: Channel file not found")
-        print(f"Tried: {train_file_custom}")
-        print(f"Tried: {train_file_nasa}")
+    # Check if files exist
+    if not os.path.exists(train_file):
+        print(f"Error: NASA training file not found: {train_file}")
+        print("Please ensure you have downloaded the SMAP/MSL dataset.")
         sys.exit(1)
+    
+    if not os.path.exists(test_file):
+        print(f"Warning: NASA test file not found: {test_file}")
+        print("Continuing with training data only...")
     
     # Load training data
     print(f"\nLoading training data from {train_file}...")
@@ -136,11 +131,11 @@ def main():
         print(f"Training data shape: {train_data.shape}")
     except FileNotFoundError as e:
         print(f"Error: {e}")
-        print(f"\nPlease ensure the data file exists at: {train_file}")
-        print("You may need to download the SMAP/MSL dataset first.")
+        print(f"\nPlease ensure the NASA data file exists at: {train_file}")
+        print("Download the SMAP/MSL dataset from Kaggle.")
         sys.exit(1)
     
-    # Load test data (optional, for validation)
+    # Load test data
     test_data = None
     if os.path.exists(test_file):
         print(f"Loading test data from {test_file}...")

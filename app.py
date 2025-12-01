@@ -122,7 +122,7 @@ def sidebar_controls():
                 if st.sidebar.button("Load Sample Data", type="primary"):
                     file_path = os.path.join(test_dir, selected_file)
                     loaded_data = load_npy_channel(file_path)
-                    channel_name = selected_file.replace('_test.npy', '').replace('_train.npy', '').replace('.npy', '')
+                    channel_name = selected_file.replace('.npy', '')
                     st.sidebar.success(f"Loaded {selected_file}")
             else:
                 st.sidebar.info("No test files found in data/test/")
