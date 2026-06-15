@@ -15,7 +15,7 @@ Automatically monitors spacecraft sensor data and detects unusual patterns that 
 ## ✨ Features
 
 - 🤖 **AUTO Model Selection** - Automatically detects data type and selects best model
-- ⚡ **Fast Processing** - Downsample mode for 2x speed boost
+- ⚡ **Fast Processing** - Downsample mode for 3x speed boost
 - 📊 **Interactive Dashboard** - Real-time visualization with Plotly charts
 - 🔮 **Lifespan Prediction** - Estimates remaining operational days
 - 📈 **3-Panel Analysis** - Telemetry, predictions, and error visualization
